@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/gethub/MevniWet1/AVL.h
+iostream
+-
+AVL_Tree.h
+D:/gethub/MevniWet1/AVL_Tree.h
+
+D:/gethub/MevniWet1/AVL_Tree.h
+iostream
+-
+
+D:/gethub/MevniWet1/CoursesManager.h
+iostream
+-
+AVL.h
+D:/gethub/MevniWet1/AVL.h
+library.h
+D:/gethub/MevniWet1/library.h
+linkedList.h
+D:/gethub/MevniWet1/linkedList.h
+stdlib.h
+-
+time.h
+-
+exception
+-
+
+D:/gethub/MevniWet1/library.h
+
+D:/gethub/MevniWet1/linkedList.h
+linkedListNode.h
+D:/gethub/MevniWet1/linkedListNode.h
+
+D:/gethub/MevniWet1/linkedListNode.h
+
+D:/gethub/MevniWet1/main.cpp
+CoursesManager.h
+D:/gethub/MevniWet1/CoursesManager.h
+
