@@ -75,17 +75,6 @@ CMAKE_BINARY_DIR = F:\Documents\GitHub\WizardCell\MevniWet1\cmake-build-debug
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	"C:\Program Files\JetBrains\CLion 2019.3.4\bin\cmake\win\bin\cmake.exe" --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -96,6 +85,17 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	"C:\Program Files\JetBrains\CLion 2019.3.4\bin\cmake\win\bin\cmake.exe" --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -130,71 +130,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named MevniWet1
+# Target rules for targets named hw1
 
 # Build rule for target.
-MevniWet1: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 MevniWet1
-.PHONY : MevniWet1
+hw1: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 hw1
+.PHONY : hw1
 
 # fast build rule for target.
-MevniWet1/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MevniWet1.dir\build.make CMakeFiles/MevniWet1.dir/build
-.PHONY : MevniWet1/fast
-
-AVL.obj: AVL.cpp.obj
-
-.PHONY : AVL.obj
-
-# target to build an object file
-AVL.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MevniWet1.dir\build.make CMakeFiles/MevniWet1.dir/AVL.cpp.obj
-.PHONY : AVL.cpp.obj
-
-AVL.i: AVL.cpp.i
-
-.PHONY : AVL.i
-
-# target to preprocess a source file
-AVL.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MevniWet1.dir\build.make CMakeFiles/MevniWet1.dir/AVL.cpp.i
-.PHONY : AVL.cpp.i
-
-AVL.s: AVL.cpp.s
-
-.PHONY : AVL.s
-
-# target to generate assembly for a file
-AVL.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MevniWet1.dir\build.make CMakeFiles/MevniWet1.dir/AVL.cpp.s
-.PHONY : AVL.cpp.s
-
-AVL_Tree.obj: AVL_Tree.cpp.obj
-
-.PHONY : AVL_Tree.obj
-
-# target to build an object file
-AVL_Tree.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MevniWet1.dir\build.make CMakeFiles/MevniWet1.dir/AVL_Tree.cpp.obj
-.PHONY : AVL_Tree.cpp.obj
-
-AVL_Tree.i: AVL_Tree.cpp.i
-
-.PHONY : AVL_Tree.i
-
-# target to preprocess a source file
-AVL_Tree.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MevniWet1.dir\build.make CMakeFiles/MevniWet1.dir/AVL_Tree.cpp.i
-.PHONY : AVL_Tree.cpp.i
-
-AVL_Tree.s: AVL_Tree.cpp.s
-
-.PHONY : AVL_Tree.s
-
-# target to generate assembly for a file
-AVL_Tree.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MevniWet1.dir\build.make CMakeFiles/MevniWet1.dir/AVL_Tree.cpp.s
-.PHONY : AVL_Tree.cpp.s
+hw1/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hw1.dir\build.make CMakeFiles/hw1.dir/build
+.PHONY : hw1/fast
 
 main.obj: main.cpp.obj
 
@@ -202,7 +148,7 @@ main.obj: main.cpp.obj
 
 # target to build an object file
 main.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MevniWet1.dir\build.make CMakeFiles/MevniWet1.dir/main.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hw1.dir\build.make CMakeFiles/hw1.dir/main.cpp.obj
 .PHONY : main.cpp.obj
 
 main.i: main.cpp.i
@@ -211,7 +157,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MevniWet1.dir\build.make CMakeFiles/MevniWet1.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hw1.dir\build.make CMakeFiles/hw1.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -220,7 +166,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\MevniWet1.dir\build.make CMakeFiles/MevniWet1.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hw1.dir\build.make CMakeFiles/hw1.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -231,13 +177,7 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... MevniWet1
-	@echo ... AVL.obj
-	@echo ... AVL.i
-	@echo ... AVL.s
-	@echo ... AVL_Tree.obj
-	@echo ... AVL_Tree.i
-	@echo ... AVL_Tree.s
+	@echo ... hw1
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

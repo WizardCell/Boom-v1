@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+F:/Documents/GitHub/WizardCell/MevniWet1/AVL.h
+iostream
+-
+AVL_Tree.h
+F:/Documents/GitHub/WizardCell/MevniWet1/AVL_Tree.h
+
+F:/Documents/GitHub/WizardCell/MevniWet1/AVL_Tree.h
+iostream
+-
+
+F:/Documents/GitHub/WizardCell/MevniWet1/CoursesManager.h
+iostream
+-
+AVL.h
+F:/Documents/GitHub/WizardCell/MevniWet1/AVL.h
+library.h
+F:/Documents/GitHub/WizardCell/MevniWet1/library.h
+linkedList.h
+F:/Documents/GitHub/WizardCell/MevniWet1/linkedList.h
+stdlib.h
+-
+time.h
+-
+exception
+-
+
+F:/Documents/GitHub/WizardCell/MevniWet1/library.h
+
+F:/Documents/GitHub/WizardCell/MevniWet1/linkedList.h
+linkedListNode.h
+F:/Documents/GitHub/WizardCell/MevniWet1/linkedListNode.h
+
+F:/Documents/GitHub/WizardCell/MevniWet1/linkedListNode.h
+
+F:/Documents/GitHub/WizardCell/MevniWet1/main.cpp
+CoursesManager.h
+F:/Documents/GitHub/WizardCell/MevniWet1/CoursesManager.h
+
