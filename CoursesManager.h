@@ -5,9 +5,10 @@
 #ifndef HW1_COURSESMANAGER_H
 #define HW1_COURSESMANAGER_H
 #include <iostream>
-#include "AVL.h"
+#include "list.h"
 #include "library.h"
-#include "linkedList.h"
+#include "classLecture.h"
+#include "AVLtree.h"
 #include <stdlib.h>
 #include <time.h>
 #include <exception>
