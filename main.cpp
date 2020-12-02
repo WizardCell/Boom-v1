@@ -1,27 +1,16 @@
-#include <iostream>
-#include "AVL.h"
 
-void inorder(treeNode<int> *p) {
-    if (p == NULL)
-        return;
-    inorder(p->Left);
-    cout << *(p->Id) << " ";
-    inorder(p->Right);
-}
+#include "CoursesManager.h"
 
-int main() {
-    std::cout << "Hello, World!" << std::endl;
-    AVLTree<int> y;
-    //auto *a = new treeNode<int>(1,11);
-    //(y).addNode(a);
-//    auto *b = new treeNode<int>(2,11);
-//    (*y).addNode(b);
-//    auto *c = new treeNode<int>(3,11);
-//    (*y).addNode(c);
-//    auto *dd = new treeNode<int>(4,11);
-//    (*y).addNode(dd);
-//    auto *e = new treeNode<int>(5,11);
-//    (*y).addNode(e);
-//    inorder((*y).getRoot());
+
+//
+// Created by basil on 12/1/2020.
+//
+
+int main()
+{
+    CoursesManager<int> * ds = new CoursesManager<int>();
+    ds->AddCourse(ds,234128,3);
+    std::cout<< *(ds->courses_tree->tree_root->Id) << std::endl;
+    
     return 0;
 }
