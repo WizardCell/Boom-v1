@@ -39,12 +39,14 @@ LinkedList<data_type>::~LinkedList<data_type>()
 {
     linkedNode<data_type>* get_head = this->head;
     while(get_head){
+        linkedNode<data_type>* ptr = get_head;
         get_head = get_head->next;
-        if(get_head == nullptr){
-            delete this->last;
-        }
-        else if(get_head!= nullptr) delete get_head->previous;
+        if(ptr!= nullptr)
+            delete ptr;
     }
+    this->head= nullptr;
+    this->last= nullptr;
+    delete this;
 }
 
 template<class data_type>
