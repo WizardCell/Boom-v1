@@ -4,7 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+<<<<<<< HEAD
   "D:/gethub/MevniWet1/main.cpp" "D:/gethub/MevniWet1/cmake-build-debug/CMakeFiles/hw1.dir/main.cpp.obj"
+=======
+  "F:/Documents/GitHub/WizardCell/MevniWet1/main.cpp" "F:/Documents/GitHub/WizardCell/MevniWet1/cmake-build-debug/CMakeFiles/hw1.dir/main.cpp.obj"
+>>>>>>> fc3db906031268ea1b847bc8180dc54e4029f8bc
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

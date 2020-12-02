@@ -69,7 +69,11 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+<<<<<<< HEAD
 	"D:\Downloads\cleon\CLion 2019.3.5\bin\cmake\win\bin\cmake.exe" -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+=======
+	"C:\Program Files\JetBrains\CLion 2019.3.4\bin\cmake\win\bin\cmake.exe" --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+>>>>>>> fc3db906031268ea1b847bc8180dc54e4029f8bc
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -114,12 +118,20 @@ depend:
 
 # Build rule for target.
 hw1: cmake_check_build_system
+<<<<<<< HEAD
 	$(MAKE) -f CMakeFiles\Makefile2 hw1
+=======
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 hw1
+>>>>>>> fc3db906031268ea1b847bc8180dc54e4029f8bc
 .PHONY : hw1
 
 # fast build rule for target.
 hw1/fast:
+<<<<<<< HEAD
 	$(MAKE) -f CMakeFiles\hw1.dir\build.make CMakeFiles/hw1.dir/build
+=======
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hw1.dir\build.make CMakeFiles/hw1.dir/build
+>>>>>>> fc3db906031268ea1b847bc8180dc54e4029f8bc
 .PHONY : hw1/fast
 
 main.obj: main.cpp.obj
@@ -128,7 +140,11 @@ main.obj: main.cpp.obj
 
 # target to build an object file
 main.cpp.obj:
+<<<<<<< HEAD
 	$(MAKE) -f CMakeFiles\hw1.dir\build.make CMakeFiles/hw1.dir/main.cpp.obj
+=======
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hw1.dir\build.make CMakeFiles/hw1.dir/main.cpp.obj
+>>>>>>> fc3db906031268ea1b847bc8180dc54e4029f8bc
 .PHONY : main.cpp.obj
 
 main.i: main.cpp.i
@@ -137,7 +153,11 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
+<<<<<<< HEAD
 	$(MAKE) -f CMakeFiles\hw1.dir\build.make CMakeFiles/hw1.dir/main.cpp.i
+=======
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hw1.dir\build.make CMakeFiles/hw1.dir/main.cpp.i
+>>>>>>> fc3db906031268ea1b847bc8180dc54e4029f8bc
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -146,7 +166,11 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
+<<<<<<< HEAD
 	$(MAKE) -f CMakeFiles\hw1.dir\build.make CMakeFiles/hw1.dir/main.cpp.s
+=======
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hw1.dir\build.make CMakeFiles/hw1.dir/main.cpp.s
+>>>>>>> fc3db906031268ea1b847bc8180dc54e4029f8bc
 .PHONY : main.cpp.s
 
 # Help Target
@@ -158,6 +182,10 @@ help:
 	@echo ... hw1
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+<<<<<<< HEAD
+=======
+	@echo ... hw1
+>>>>>>> fc3db906031268ea1b847bc8180dc54e4029f8bc
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

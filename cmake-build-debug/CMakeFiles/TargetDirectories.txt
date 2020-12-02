@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 D:/gethub/MevniWet1/cmake-build-debug/CMakeFiles/hw1.dir
 D:/gethub/MevniWet1/cmake-build-debug/CMakeFiles/edit_cache.dir
 D:/gethub/MevniWet1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+=======
+F:/Documents/GitHub/WizardCell/MevniWet1/cmake-build-debug/CMakeFiles/hw1.dir
+F:/Documents/GitHub/WizardCell/MevniWet1/cmake-build-debug/CMakeFiles/edit_cache.dir
+F:/Documents/GitHub/WizardCell/MevniWet1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+>>>>>>> fc3db906031268ea1b847bc8180dc54e4029f8bc

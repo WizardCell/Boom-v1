@@ -244,6 +244,12 @@ hw1_BINARY_DIR:STATIC=D:/gethub/MevniWet1/cmake-build-debug
 //Value Computed by CMake
 hw1_SOURCE_DIR:STATIC=D:/gethub/MevniWet1
 
+//Value Computed by CMake
+hw1_BINARY_DIR:STATIC=F:/Documents/GitHub/WizardCell/MevniWet1/cmake-build-debug
+
+//Value Computed by CMake
+hw1_SOURCE_DIR:STATIC=F:/Documents/GitHub/WizardCell/MevniWet1
+
 
 ########################
 # INTERNAL cache entries
