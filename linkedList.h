@@ -117,32 +117,32 @@ linkedNode<data_type> *LinkedList<data_type>::GetLast()
 template<class data_type>
 void LinkedList<data_type>::removeNodeFromThis(linkedNode<data_type> *node_to_delete)
 {
-    if(node_to_delete== nullptr)
+    if(node_to_delete == nullptr)
     {
         return;
     }
-    if(node_to_delete->next== nullptr&&node_to_delete->previous== nullptr){
-        this->last= nullptr;
-        this->head= nullptr;
+    if(node_to_delete->next == nullptr && node_to_delete->previous == nullptr){ //Only node
+        this->last = nullptr;
+        this->head = nullptr;
         delete node_to_delete;
         this->size_of_list= 0;
         return;
     }
-    if(node_to_delete->previous== nullptr){
-        node_to_delete->next->previous= nullptr;
-        this->head=node_to_delete->next;
+    if(node_to_delete->previous == nullptr){ //First node
+        node_to_delete->next->previous = nullptr;
+        this->head = node_to_delete->next;
         delete node_to_delete;
         this->size_of_list--;
         return;
     }
-    if(node_to_delete->next== nullptr){
-        node_to_delete->previous->next= nullptr;
-        this->last=node_to_delete->previous;
+    if(node_to_delete->next == nullptr){ //Last node
+        node_to_delete->previous->next = nullptr;
+        this->last = node_to_delete->previous;
         delete node_to_delete;
         this->size_of_list--;
         return;
-    } else{
-        node_to_delete->next->previous=node_to_delete->previous;
+    } else{ //Middle node
+        node_to_delete->next->previous = node_to_delete->previous;
         node_to_delete->previous->next=node_to_delete->next;
         delete node_to_delete;
         this->size_of_list--;
