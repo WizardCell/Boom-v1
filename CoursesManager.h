@@ -15,44 +15,44 @@
 #define ZERO 0
 #define DONTCARE -1
 
-template <class data_type>
+template <class T>
 class CoursesManager{
     public:
-    AVLTree<linkedNode<AVLTree<AVLTree<int>>>*> *courses_tree;
-    LinkedList<AVLTree<AVLTree<int>>> *sorted_list;
+    AVLTree<int, classLecture<Node<AVLTree<T, AVLTree<T, T>>>>**> *courses_tree;
+    List<AVLTree<T, AVLTree<T, T>>> *sorted_list;
     CoursesManager();
     ~CoursesManager();
-    StatusType AddCourse (void *DS, int courseID, int numOfClasses);
+    StatusType AddCourse(void *DS, int courseID, int numOfClasses);
 };
 
-template<class data_type>
-CoursesManager<data_type>::~CoursesManager()
+template<class T>
+CoursesManager<T>::~CoursesManager()
 {
     delete this->courses_tree;
     delete this->sorted_list;
 }
 
-template<class data_type>
-CoursesManager<data_type>::CoursesManager()
+template<class T>
+CoursesManager<T>::CoursesManager()
 {
-     this->courses_tree=new  AVLTree<linkedNode<AVLTree<AVLTree<int>>>*>();
-     this->sorted_list = new LinkedList<AVLTree<AVLTree<int>>>();
+     this->courses_tree = new AVLTree<T, classLecture<Node<AVLTree<T, AVLTree<T, T>>>>**>() *courses_tree;
+     this->sorted_list = new List<AVLTree<T, AVLTree<T, T>>>();
 }
 
-template<class data_type>
-StatusType CoursesManager<data_type>::AddCourse(void *DS, int courseID, int numOfClasses)
+template<class T>
+StatusType CoursesManager<T>::AddCourse(void *DS, int courseID, int numOfClasses)
 {
     // if allocation error return ERROR_ALLOCATION
     try
     {
-        AVLNode<linkedNode<AVLTree<AVLTree<int>>>*> *new_course = new AVLNode<linkedNode<AVLTree<AVLTree<int>>>*>;
+        treeNode<T, classLecture<Node<AVLTree<T, AVLTree<T, T>>>>**> *new_course = new treeNode<T, classLecture<Node<AVLTree<T, AVLTree<T, T>>>>**>();
         if(courseID<=0 || numOfClasses<=0 || DS==NULL )
         {
             return INVALID_INPUT;
         }
 
         //if exist return FAILURE;
-        if(this->courses_tree->searchId(courseID))
+        if(this->courses_tree->searchKey(courseID))
         {
             return FAILURE;
         }
