@@ -5,7 +5,7 @@
 #ifndef HW1_COURSESMANAGER_H
 #define HW1_COURSESMANAGER_H
 #include <iostream>
-#include "list.h"
+#include "linkedList.h"
 #include "library.h"
 #include "classLecture.h"
 #include "AVLtree.h"
@@ -15,37 +15,35 @@
 #define ZERO 0
 #define DONTCARE -1
 
-template <class T>
 class CoursesManager{
     public:
-    AVLTree<int, classLecture<Node<AVLTree<T, AVLTree<T, T>>>>**> *courses_tree;
-    List<AVLTree<T, AVLTree<T, T>>> *sorted_list;
+    AVLTree<int, classLecture<linkedNode<AVLTree<int, AVLTree<int, int>>>>> *courses_tree;
+    LinkedList<AVLTree<int, AVLTree<int, int>>> *sorted_list;
     CoursesManager();
     ~CoursesManager();
     StatusType AddCourse(void *DS, int courseID, int numOfClasses);
 };
 
-template<class T>
-CoursesManager<T>::~CoursesManager()
+CoursesManager::~CoursesManager()
 {
     delete this->courses_tree;
     delete this->sorted_list;
 }
 
-template<class T>
-CoursesManager<T>::CoursesManager()
+CoursesManager::CoursesManager()
 {
-     this->courses_tree = new AVLTree<T, classLecture<Node<AVLTree<T, AVLTree<T, T>>>>**>() *courses_tree;
-     this->sorted_list = new List<AVLTree<T, AVLTree<T, T>>>();
+     this->courses_tree = new AVLTree<int, classLecture<linkedNode<AVLTree<int, AVLTree<int, int>>>>>();
+     this->sorted_list = new LinkedList<AVLTree<int, AVLTree<int, int>>>();
 }
 
-template<class T>
-StatusType CoursesManager<T>::AddCourse(void *DS, int courseID, int numOfClasses)
+
+StatusType CoursesManager::AddCourse(void *DS, int courseID, int numOfClasses)
 {
     // if allocation error return ERROR_ALLOCATION
     try
     {
-        treeNode<T, classLecture<Node<AVLTree<T, AVLTree<T, T>>>>**> *new_course = new treeNode<T, classLecture<Node<AVLTree<T, AVLTree<T, T>>>>**>();
+        treeNode<int, classLecture<linkedNode<AVLTree<int, AVLTree<int, int>>>>> *new_course = new treeNode<int, classLecture<linkedNode<AVLTree<int, AVLTree<int, int>>>>>();
+        new_course->is_array= true;
         if(courseID<=0 || numOfClasses<=0 || DS==NULL )
         {
             return INVALID_INPUT;
@@ -56,42 +54,49 @@ StatusType CoursesManager<T>::AddCourse(void *DS, int courseID, int numOfClasses
         {
             return FAILURE;
         }
-        new_course->Id=&courseID;
+        int* course_id_new = new int(courseID);
+        new_course->Key=course_id_new;
         if( this->sorted_list->ifTimeAlReadyExists(ZERO) != nullptr)
         {
-            new_course->Node_data = new linkedNode<AVLTree<AVLTree<int>>>*[numOfClasses];
+            new_course-> Data = new classLecture<linkedNode<AVLTree<int, AVLTree<int, int>>>>[numOfClasses];
             for(int i=0;i<numOfClasses ;i++)
-                new_course->Node_data[i] = sorted_list->ifTimeAlReadyExists(ZERO);
+            {
+                new_course->Data[i].class_id = i;
+                new_course->Data[i].class_time_node = sorted_list->ifTimeAlReadyExists(ZERO);
+            }
 
-            AVLNode<AVLTree<int>> *current = new AVLNode<AVLTree<int>>(courseID, nullptr);
-            sorted_list->ifTimeAlReadyExists(ZERO)->data->addNode( current );
-            current->Node_data = new AVLTree<int>();
+            treeNode<int, AVLTree<int, int>> *current = new treeNode<int, AVLTree<int, int>>(courseID, nullptr);
+            sorted_list->ifTimeAlReadyExists(ZERO)->data->addTreeNodeByPtr(current);
+            current->Data = new AVLTree<int, int>();
 
             for(int i=0;i<numOfClasses ;i++)
             {
                 int dont_care = DONTCARE;
-                AVLNode<int> *c_i = new AVLNode<int>(i,&dont_care);
-                current->Node_data->addNode(c_i);
+                treeNode<int,int> *c_i = new treeNode<int,int>(i,dont_care);
+                current->Data->addTreeNodeByPtr(c_i);
             }
-            this->courses_tree->addNode(new_course);
+            this->courses_tree->addTreeNodeByPtr(new_course);
             return SUCCESS;
         } else{
             //add zero node to linkedlist
-            new_course->Node_data = new linkedNode<AVLTree<AVLTree<int>>>*[numOfClasses];
+            new_course-> Data = new classLecture<linkedNode<AVLTree<int, AVLTree<int, int>>>>[numOfClasses];
             this->sorted_list->addNewNode(0);
             for(int i=0;i<numOfClasses ;i++)
-                new_course->getData()[i] = sorted_list->ifTimeAlReadyExists(ZERO);
-            AVLNode<AVLTree<int>> *current = new AVLNode<AVLTree<int>>(courseID, nullptr);
-            sorted_list->ifTimeAlReadyExists(ZERO)->data->addNode( current );
-            current->Node_data = new AVLTree<int>();
+            {
+                new_course->Data[i].class_id = i;
+                new_course->Data[i].class_time_node = sorted_list->ifTimeAlReadyExists(ZERO);
+            }
+            treeNode<int, AVLTree<int, int>> *current = new treeNode<int, AVLTree<int, int>>(courseID, nullptr);
+            sorted_list->ifTimeAlReadyExists(ZERO)->data->addTreeNodeByPtr(current);
+            current->Data = new AVLTree<int, int>();
             //add class to linked list tree
             for(int i=0;i<numOfClasses ;i++)
             {
                 int dont_care = DONTCARE;
-                AVLNode<int> *c_i = new AVLNode<int>(i,&dont_care);
-                current->Node_data->addNode(c_i);
+                treeNode<int,int> *c_i = new treeNode<int,int>(i,dont_care);
+                current->Data->addTreeNodeByPtr(c_i);
             }
-            this->courses_tree->addNode(new_course);
+            this->courses_tree->addTreeNodeByPtr(new_course);
             return SUCCESS;
         }
     }

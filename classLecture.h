@@ -9,6 +9,11 @@ class classLecture {
 public:
     int class_id;
     Data_type* class_time_node;
+    classLecture()
+    {
+        this->class_id = 0;
+        this->class_time_node = nullptr;
+    }
     classLecture(int id)
     {
         this->class_id = id;

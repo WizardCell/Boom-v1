@@ -16,23 +16,29 @@ public:
     D* Data;
     int BF;
     int Height;
+    bool is_array;
 
-
-    treeNode(): Father(nullptr), LeftSon(nullptr), RightSon(nullptr), Key(nullptr), Data(nullptr), BF(0), Height(0){}
+    treeNode(): Father(nullptr), LeftSon(nullptr), RightSon(nullptr), Key(nullptr), Data(nullptr), BF(0), Height(0)
+    , is_array(false){}
 
     treeNode(const K& key, const D& data, treeNode* left_son= nullptr, treeNode* right_son= nullptr, int bf=0, int height=0):
-            Father(nullptr), LeftSon(left_son), RightSon(right_son), Key(new K(key)), Data(new D(data)), BF(bf), Height(height){}
+            Father(nullptr), LeftSon(left_son), RightSon(right_son), Key(new K(key)), Data(new D(data)), BF(bf), Height(height)
+    ,is_array(false){}
 
     treeNode(const K& key, D* data, treeNode* left_son= nullptr, treeNode* right_son= nullptr, int bf=0, int height=0):
-            Father(nullptr), LeftSon(left_son), RightSon(right_son), Key(new K(key)), Data(data), BF(bf), Height(height){} ///Added this to prevent memory leak.
+            Father(nullptr), LeftSon(left_son), RightSon(right_son), Key(new K(key)), Data(data), BF(bf), Height(height)
+            ,is_array(false){} ///Added this to prevent memory leak.
 
     treeNode(const treeNode& nodeToCopy):
             Father(nodeToCopy.Father), LeftSon(nodeToCopy.LeftSon), RightSon(nodeToCopy.RightSon),
-            Key(nodeToCopy.Key), Data(nodeToCopy.Data), BF(nodeToCopy.BF), Height(nodeToCopy.Height){}
+            Key(nodeToCopy.Key), Data(nodeToCopy.Data), BF(nodeToCopy.BF), Height(nodeToCopy.Height),
+    is_array(false){}
 
     ~treeNode(){
         delete Key;
-        delete Data;
+        if(is_array)
+        delete[] Data;
+        else delete Data;
     }
 
     void updateHeight(){
@@ -434,10 +440,5 @@ public:
     }
 
 };
-
-
-
-
-
 
 #endif
