@@ -183,11 +183,11 @@ class AVLTree{
     int nodesAmount;
 
 public:
-
+    treeNode<K,D>* min_number;
     class KeyExists : public exception{};
     class KeyDoesntExist : public exception{};
 
-    AVLTree(): Root(nullptr), nodesAmount(0){}
+    AVLTree(): Root(nullptr), nodesAmount(0), min_number(nullptr){}
 
     ~AVLTree(){
         DestroySubtree(Root);
@@ -325,6 +325,22 @@ public:
         return false;
     }
 
+    treeNode<K,D>* getByKey(const K& key){
+        treeNode<K,D>* Current=Root;
+        while(Current!= nullptr){
+            if(key==*(Current->Key)){
+                return Current;
+            }
+            else if(key> *(Current->Key)){
+                Current=Current->RightSon;
+            }
+            else if(key< *(Current->Key)){
+                Current=Current->LeftSon;
+            }
+        }
+        return nullptr;
+    }
+
     void fixTree(treeNode<K,D>* node){
         treeNode<K,D>* temp= node;
         while(temp!=nullptr){
@@ -439,6 +455,17 @@ public:
         removeTreeNode(toRemove);
     }
 
+    treeNode<K,D>* minValue()
+    {
+        treeNode<K,D>* current = this->getRoot();
+
+/* loop down to find the leftmost leaf */
+        while (current->LeftSon != NULL)
+        {
+            current = current->LeftSon;
+        }
+        return current;
+    }
 };
 
 #endif

@@ -17,7 +17,7 @@ public:
     LinkedList<data_type>();
     ~LinkedList<data_type>();
     int GetListSize();
-    linkedNode<data_type>* addNewNode(int node_time);
+    linkedNode<data_type>* addNewNode(linkedNode<data_type> * node_time);
     bool isEmpty();
     void removeNodeFromThis(linkedNode<data_type>* node_to_delete);
     linkedNode<data_type>* GetFirst();
@@ -28,10 +28,10 @@ template <class data_type>
 LinkedList<data_type>::LinkedList():complex_check(0)
 {
 
-    linkedNode<data_type> *ini_node = new linkedNode<data_type>(0); //time zero
-    this->head = ini_node;
-    this->last=ini_node;
-    this->size_of_list=1;
+    //linkedNode<data_type> *ini_node = new linkedNode<data_type>(0); //time zero
+    this->head = nullptr;
+    this->last= nullptr;
+    this->size_of_list=0;
 }
 
 template<class data_type>
@@ -42,7 +42,9 @@ LinkedList<data_type>::~LinkedList<data_type>()
         linkedNode<data_type>* ptr = get_head;
         get_head = get_head->next;
         if(ptr!= nullptr)
+        {
             delete ptr;
+        }
     }
     this->head= nullptr;
     this->last= nullptr;
@@ -63,30 +65,30 @@ int LinkedList<data_type>::GetListSize()
 }
 
 template<class data_type>
-linkedNode<data_type> *LinkedList<data_type>::addNewNode(int node_time)
+linkedNode<data_type> *LinkedList<data_type>::addNewNode(linkedNode<data_type> * add_this_node)
 {
-    linkedNode<data_type> *add_this_node = new linkedNode<data_type>(node_time);
+
     if (this->isEmpty())
     {
         this->head = add_this_node;
         add_this_node->previous = nullptr;
         add_this_node->next = nullptr;
-        add_this_node->node_time=node_time;
+        //add_this_node->node_time=node_time;
         this->last = add_this_node;
         this->size_of_list++;
         return add_this_node;
     }
     linkedNode<data_type> *ptr = this->head;
-    while(ptr!= nullptr && ptr->node_time<node_time) {
+    while(ptr!= nullptr && ptr->node_time<=add_this_node->node_time) {
         ptr = ptr -> next;
     }
     if(ptr== nullptr)
     {
         this->last->next=add_this_node;
         add_this_node->previous=this->last;
-        this->last=ptr;
+        this->last=add_this_node;
         add_this_node->next = nullptr;
-        add_this_node->node_time=node_time;
+        //add_this_node->node_time=node_time;
         this->size_of_list++;
         return add_this_node;
     }
@@ -94,7 +96,7 @@ linkedNode<data_type> *LinkedList<data_type>::addNewNode(int node_time)
     add_this_node->next=ptr;
     add_this_node->previous=ptr->previous;
     ptr->previous = add_this_node;
-    add_this_node->node_time=node_time;
+    //add_this_node->node_time=node_time;
     this->size_of_list++;
     complex_check++;
     complex_check--;

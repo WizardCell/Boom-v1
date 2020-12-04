@@ -22,7 +22,7 @@ linkedNode<data_type>::linkedNode(int time_ini) :node_time(time_ini)
         {
             this->next= nullptr;
             this->previous= nullptr;
-            this->data= new AVLTree<int,AVLTree<int,int>>();
+            this->data= nullptr;
         }
 
 template <class data_type>
