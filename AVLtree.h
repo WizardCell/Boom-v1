@@ -3,94 +3,101 @@
 
 #include <exception>
 #include "iostream"
+#define ZERO 0
+#define ONE 1
+#define TWO 2
+
+
+
 using std::exception;
 using namespace std;
 template<class K, class D>
 class treeNode{
 
 public:
-    treeNode<K,D>* Father;
-    treeNode<K,D>* LeftSon;
-    treeNode<K,D>* RightSon;
+    treeNode<K,D>* Up;
+    treeNode<K,D>* Left;
+    treeNode<K,D>* Right;
     K* Key;
     D* Data;
     int BF;
+    class COMPCHECK : public exception{};
+    class noNODES : public exception{};
+    class noTREE : public exception{};
     int Height;
     bool is_array;
 
-    treeNode(): Father(nullptr), LeftSon(nullptr), RightSon(nullptr), Key(nullptr), Data(nullptr), BF(0), Height(0)
+    treeNode(): Up(nullptr), Left(nullptr), Right(nullptr), Key(nullptr), Data(nullptr), BF(0), Height(0)
     , is_array(false){}
-
-    treeNode(const K& key, const D& data, treeNode* left_son= nullptr, treeNode* right_son= nullptr, int bf=0, int height=0):
-            Father(nullptr), LeftSon(left_son), RightSon(right_son), Key(new K(key)), Data(new D(data)), BF(bf), Height(height)
-    ,is_array(false){}
-
-    treeNode(const K& key, D* data, treeNode* left_son= nullptr, treeNode* right_son= nullptr, int bf=0, int height=0):
-            Father(nullptr), LeftSon(left_son), RightSon(right_son), Key(new K(key)), Data(data), BF(bf), Height(height)
-            ,is_array(false){} ///Added this to prevent memory leak.
-
-    treeNode(const treeNode& nodeToCopy):
-            Father(nodeToCopy.Father), LeftSon(nodeToCopy.LeftSon), RightSon(nodeToCopy.RightSon),
-            Key(nodeToCopy.Key), Data(nodeToCopy.Data), BF(nodeToCopy.BF), Height(nodeToCopy.Height),
-    is_array(false){}
 
     ~treeNode(){
         delete Key;
         if(is_array)
-        delete[] Data;
+            delete[] Data;
         else delete Data;
     }
 
     void updateHeight(){
-        if(LeftSon== nullptr&&RightSon== nullptr){ ///leaf
+        if(Left== nullptr&&Right== nullptr){ ///leaf
             Height=0;
         }
-        else if(LeftSon== nullptr){
-            Height=RightSon->Height+1;
+        else if(Left== nullptr){
+            Height=Right->Height+1;
         }
-        else if(RightSon== nullptr){
-            Height=LeftSon->Height+1;
+        else if(Right== nullptr){
+            Height=Left->Height+1;
         }
-        else if(LeftSon->Height>RightSon->Height){
-            Height=LeftSon->Height+1;
+        else if(Left->Height>Right->Height){
+            Height=Left->Height+1;
         }
-        else if(RightSon->Height>=LeftSon->Height){
-            Height=RightSon->Height+1;
+        else if(Right->Height>=Left->Height){
+            Height=Right->Height+1;
         }
     }
 
-    int getBF(){
-        return this->BF;
+
+    treeNode(const K& key, const D& data, treeNode* left_son= nullptr, treeNode* right_son= nullptr, int bf=0, int height=0):
+            Up(nullptr), Left(left_son), Right(right_son), Key(new K(key)), Data(new D(data)), BF(bf), Height(height)
+    ,is_array(false)
+    {
+        int cnt=0;
+        cnt++;
     }
+
+    treeNode(const K& key, D* data, treeNode* left_son= nullptr, treeNode* right_son= nullptr, int bf=0, int height=0):
+            Up(nullptr), Left(left_son), Right(right_son), Key(new K(key)), Data(data), BF(bf), Height(height)
+            ,is_array(false){} ///Added this to prevent memory leak.
+
+
 
     void updateBF(){
-        int leftHeight=0, rightHeight=0;
-        if(RightSon!= nullptr){
-            rightHeight=1+RightSon->Height;
+        int leftHeight=ZERO, rightHeight=ZERO;
+        if(Right!= nullptr){
+            rightHeight=1+Right->Height;
         }
-        if(LeftSon!= nullptr){
-            leftHeight=1+LeftSon->Height;
+        if(Left!= nullptr){
+            leftHeight=1+Left->Height;
         }
         BF=leftHeight-rightHeight;
     }
 
     void Roll(){
-        if(BF==2){
-            if(LeftSon->BF>=0){
+        if(BF==TWO){
+            if(Left->BF>=0){
                 RollLL();
                 return;
             }
-            else if(LeftSon->BF==-1){
+            else if(Left->BF==-1){
                 RollLR();
                 return;
             }
         }
         else if(BF==-2){
-            if(RightSon->BF<=0){
+            if(Right->BF<=0){
                 RollRR();
                 return;
             }
-            else if(RightSon->BF==1){
+            else if(Right->BF==ONE){
                 RollRL();
                 return;
             }
@@ -99,74 +106,74 @@ public:
 
     void RollLL(){ ///to be reviewed "need IFs"
         int position=0;
-        if(this->Father!= nullptr){
-            if(this->Father->LeftSon==this){
+        if(this->Up!= nullptr){
+            if(this->Up->Left==this){
                 position=-1;
             }
             else{
-                position=1;
+                position=ONE;
             }
         }
-        treeNode* temp=this->LeftSon;
-        this->LeftSon=temp->RightSon;
-        temp->RightSon=this;
-        temp->Father=this->Father;
+        treeNode* temp=this->Left;
+        this->Left=temp->Right;
+        temp->Right=this;
+        temp->Up=this->Up;
 
-        if(this->LeftSon!=nullptr){
-            this->LeftSon->Father=this;
+        if(this->Left!=nullptr){
+            this->Left->Up=this;
         }
         if(position==-1){
-            this->Father->LeftSon=temp;
+            this->Up->Left=temp;
         }
-        else if(position==1){
-            this->Father->RightSon=temp;
+        else if(position==ONE){
+            this->Up->Right=temp;
         }
 
-        this->Father=temp;
+        this->Up=temp;
 
         this->updateHeight();
         this->updateBF();
     }
 
     void RollRR(){
-        int position=0;
-        if(this->Father!= nullptr){
-            if(this->Father->LeftSon==this){
+        int position=ZERO;
+        if(this->Up!= nullptr){
+            if(this->Up->Left==this){
                 position=-1;
             }
             else{
                 position=1;
             }
         }
-        treeNode* temp=this->RightSon;
-        this->RightSon=temp->LeftSon;
-        if(this->RightSon!=nullptr){
-            this->RightSon->Father=this;
+        treeNode* temp=this->Right;
+        this->Right=temp->Left;
+        if(this->Right!=nullptr){
+            this->Right->Up=this;
         }
-        temp->LeftSon=this;
-        temp->Father=this->Father;
+        temp->Left=this;
+        temp->Up=this->Up;
 
 
         if(position==-1){
-            this->Father->LeftSon=temp;
+            this->Up->Left=temp;
         }
         else if(position==1){
-            this->Father->RightSon=temp;
+            this->Up->Right=temp;
         }
 
-        this->Father=temp;
+        this->Up=temp;
 
         this->updateHeight();
         this->updateBF();
     }
 
     void RollLR(){
-        this->LeftSon->RollRR();
+        this->Left->RollRR();
         RollLL();
     }
 
     void RollRL(){
-        this->RightSon->RollLL();
+        this->Right->RollLL();
         RollRR();
     }
 
@@ -179,167 +186,136 @@ public:
 
 template<class K, class D>
 class AVLTree{
-    treeNode<K,D>* Root;
-    int nodesAmount;
 
 public:
+    treeNode<K,D>* Head;
+    int nodesAmount;
     treeNode<K,D>* min_number;
-    class KeyExists : public exception{};
-    class KeyDoesntExist : public exception{};
+    class COMPCHECK : public exception{};
+    class noNODES : public exception{};
+    class noTREE : public exception{};
 
-    AVLTree(): Root(nullptr), nodesAmount(0), min_number(nullptr){}
+    AVLTree(): Head(nullptr), nodesAmount(0), min_number(nullptr){}
 
     ~AVLTree(){
-        DestroySubtree(Root);
+        DestroyAUX(Head);
     }
 
-    void DestroySubtree(treeNode<K,D>* subRoot){
-        if(subRoot== nullptr){
+    void DestroyAUX(treeNode<K,D>* subHead){
+        if(subHead== nullptr){
             return;
         }
-        DestroySubtree(subRoot->LeftSon);
-        DestroySubtree(subRoot->RightSon);
-        delete subRoot;
+        DestroyAUX(subHead->Left);
+        DestroyAUX(subHead->Right);
+        delete subHead;
         nodesAmount=nodesAmount-1;
     }
 
     treeNode<K,D>* getRoot(){
-        return Root;
+        return Head;
     }
 
-    int getNodesAmount(){
-        return nodesAmount;
-    }
-
-    /*void addTreeNode(treeNode<K,D>& new_node){
-        treeNode<K,D>* copy=new treeNode<K,D>(*(new_node.Key), *(new_node.Data));
+    void addthisTreeNodep(treeNode<K,D>* addNEW){
+        addNEW->Right=nullptr;
+        addNEW->Left=nullptr;
+        addNEW->Up=nullptr;
+        addNEW->BF=0;
+        addNEW->Height=0;
         if(nodesAmount==0){
-            Root=copy;
+            Head=addNEW;
             nodesAmount++;
             return;
         }
-        treeNode<K,D>* current=Root;
+        treeNode<K,D>* current=Head;
         while(1){
-            if(current!=nullptr && *(copy->Key) > *(current->Key)) {
-                if (current->RightSon == nullptr) {
-                    current->RightSon = copy;
-                    copy->Father = current;
+            if(current!=nullptr && *(addNEW->Key) > *(current->Key)) {
+                if (current->Right == nullptr) {
+                    current->Right = addNEW;
+                    addNEW->Up = current;
                     nodesAmount++;
-                    fixTree(copy);
+                    fixTree(addNEW);
                     break;
                 }
                 else {
-                    current = current->RightSon;
+                    current = current->Right;
 
                 }
             }
-            else if(current!= nullptr && *(copy->Key) < *(current->Key)){
-                if(current->LeftSon== nullptr){
-                    current->LeftSon=copy;
-                    copy->Father=current;
+            else if(current!= nullptr && *(addNEW->Key) < *(current->Key)){
+                if(current->Left== nullptr){
+                    current->Left=addNEW;
+                    addNEW->Up=current;
                     nodesAmount++;
-                    fixTree(copy);
+                    fixTree(addNEW);
                     break;
                 }
                 else {
-                    current = current->LeftSon;
-                }
-            }
-
-
-
-        }
-
-    }*/
-
-    void addTreeNodeByPtr(treeNode<K,D>* nodePtr){
-        nodePtr->RightSon=nullptr;
-        nodePtr->LeftSon=nullptr;
-        nodePtr->Father=nullptr;
-        nodePtr->BF=0;
-        nodePtr->Height=0;
-        if(nodesAmount==0){
-            Root=nodePtr;
-            nodesAmount++;
-            return;
-        }
-        treeNode<K,D>* current=Root;
-        while(1){
-            if(current!=nullptr && *(nodePtr->Key) > *(current->Key)) {
-                if (current->RightSon == nullptr) {
-                    current->RightSon = nodePtr;
-                    nodePtr->Father = current;
-                    nodesAmount++;
-                    fixTree(nodePtr);
-                    break;
-                }
-                else {
-                    current = current->RightSon;
-
-                }
-            }
-            else if(current!= nullptr && *(nodePtr->Key) < *(current->Key)){
-                if(current->LeftSon== nullptr){
-                    current->LeftSon=nodePtr;
-                    nodePtr->Father=current;
-                    nodesAmount++;
-                    fixTree(nodePtr);
-                    break;
-                }
-                else {
-                    current = current->LeftSon;
+                    current = current->Left;
                 }
             }
         }
     }
 
     treeNode<K,D>* returnNodeByKey(const K& key){
-        treeNode<K,D>* Current=Root;
+        treeNode<K,D>* Current=Head;
         while(Current!= nullptr){
             if(key==*(Current->Key)){
                 return Current;
             }
             else if(key> *(Current->Key)){
-                Current=Current->RightSon;
+                Current=Current->Right;
             }
             else if(key< *(Current->Key)){
-                Current=Current->LeftSon;
+                Current=Current->Left;
             }
         }
         return nullptr;
     }
 
     bool searchKey(const K& key){
-        treeNode<K,D>* Current=Root;
+        treeNode<K,D>* Current=Head;
         while(Current!= nullptr){
             if(key==*(Current->Key)){
                 return true;
             }
             else if(key> *(Current->Key)){
-                Current=Current->RightSon;
+                Current=Current->Right;
             }
             else if(key< *(Current->Key)){
-                Current=Current->LeftSon;
+                Current=Current->Left;
             }
         }
         return false;
     }
 
     treeNode<K,D>* getByKey(const K& key){
-        treeNode<K,D>* Current=Root;
+        treeNode<K,D>* Current=Head;
         while(Current!= nullptr){
             if(key==*(Current->Key)){
                 return Current;
             }
             else if(key> *(Current->Key)){
-                Current=Current->RightSon;
+                Current=Current->Right;
             }
             else if(key< *(Current->Key)){
-                Current=Current->LeftSon;
+                Current=Current->Left;
             }
         }
         return nullptr;
     }
+
+    treeNode<K,D>* minValue()
+    {
+        treeNode<K,D>* current = this->getRoot();
+
+/* loop down to find the leftmost leaf */
+        while (current->Left != NULL)
+        {
+            current = current->Left;
+        }
+        return current;
+    }
+
 
     void fixTree(treeNode<K,D>* node){
         treeNode<K,D>* temp= node;
@@ -347,63 +323,63 @@ public:
             temp->updateHeight();
             temp->updateBF();
             temp->Roll();
-            if(temp->Father == nullptr){
-                this->Root=temp;
+            if(temp->Up == nullptr){
+                this->Head=temp;
             }
-            temp=temp->Father;
+            temp=temp->Up;
         }
     }
 
     void removeTreeNode(treeNode<K,D>* toDelete){
-        treeNode<K,D>* toDeleteFather=toDelete->Father;
-        if(toDelete->RightSon== nullptr && toDelete->LeftSon== nullptr){///no sons(leaf)
-            if(toDeleteFather!=nullptr){
-                toDeleteFather->RightSon==toDelete? toDeleteFather->RightSon=nullptr: toDeleteFather->LeftSon=nullptr;
-                fixTree(toDeleteFather);
+        treeNode<K,D>* toDeleteUp=toDelete->Up;
+        if(toDelete->Right== nullptr && toDelete->Left== nullptr){///no sons(leaf)
+            if(toDeleteUp!=nullptr){
+                toDeleteUp->Right==toDelete? toDeleteUp->Right=nullptr: toDeleteUp->Left=nullptr;
+                fixTree(toDeleteUp);
                 delete toDelete;
             }
             else {///tree have one node
-                Root = nullptr;
+                Head = nullptr;
                 delete toDelete;
             }
             nodesAmount--;
         }
 
-        else if(toDelete->RightSon== nullptr && toDelete->LeftSon!= nullptr){
-            if(toDeleteFather!=nullptr){
-                toDeleteFather->RightSon==toDelete? toDeleteFather->RightSon=toDelete->LeftSon: toDeleteFather->LeftSon=toDelete->LeftSon;
-                toDelete->LeftSon->Father=toDeleteFather;
-                fixTree(toDeleteFather);
+        else if(toDelete->Right== nullptr && toDelete->Left!= nullptr){
+            if(toDeleteUp!=nullptr){
+                toDeleteUp->Right==toDelete? toDeleteUp->Right=toDelete->Left: toDeleteUp->Left=toDelete->Left;
+                toDelete->Left->Up=toDeleteUp;
+                fixTree(toDeleteUp);
                 delete toDelete;
             }
             else{
-                Root=toDelete->LeftSon;
-                Root->Father=nullptr;
+                Head=toDelete->Left;
+                Head->Up=nullptr;
                 delete toDelete;
             }
             nodesAmount--;
         }
 
-        else if(toDelete->RightSon!= nullptr && toDelete->LeftSon== nullptr){
-            if(toDeleteFather!=nullptr){
-                toDeleteFather->RightSon==toDelete? toDeleteFather->RightSon=toDelete->RightSon: toDeleteFather->LeftSon=toDelete->RightSon;
-                toDelete->RightSon->Father=toDeleteFather;
-                fixTree(toDeleteFather);
+        else if(toDelete->Right!= nullptr && toDelete->Left== nullptr){
+            if(toDeleteUp!=nullptr){
+                toDeleteUp->Right==toDelete? toDeleteUp->Right=toDelete->Right: toDeleteUp->Left=toDelete->Right;
+                toDelete->Right->Up=toDeleteUp;
+                fixTree(toDeleteUp);
                 delete toDelete;
             }
             else{
-                Root=toDelete->RightSon;
-                Root->Father=nullptr;
+                Head=toDelete->Right;
+                Head->Up=nullptr;
                 delete toDelete;
             }
             nodesAmount--;
         }
 
-        else if(toDelete->RightSon!= nullptr&&toDelete->LeftSon!= nullptr){
+        else if(toDelete->Right!= nullptr&&toDelete->Left!= nullptr){
 
-            treeNode<K,D>*current=toDelete->RightSon;
-            while(current->LeftSon!= nullptr){
-                current=current->LeftSon;
+            treeNode<K,D>*current=toDelete->Right;
+            while(current->Left!= nullptr){
+                current=current->Left;
 
             }
 
@@ -423,49 +399,22 @@ public:
         }
     }
 
-    /*void fillArrInorder(treeNode<K,D>* p,D arr[], int* i) {
-        //K* temp=arr;
-
-        //if (p == nullptr) return;
-        //inorder(p->LeftSon, temp);
-        // *temp=*(p->Key);
-        //temp++;
-        //cout<<*(p->Key )<<(" ");
-
-        if (p == nullptr){
+    void setCOMP(treeNode<K,D>* p) {
+        if(p== nullptr)
             return;
-        }
-        fillArrInorder(p->LeftSon, arr, i);
-        arr[*(i)]=*(p->Data);
-        (*i)++;
-        fillArrInorder(p->RightSon, arr, i);
-    }*/
-
-    void reverseInorder(treeNode<K,D>* p, D arr[], int* i){ ///added this because the priority trees that we have are sorted from the smallest one to the highest one.
-        if(p==nullptr){
-            return;
-        }
-        reverseInorder(p->RightSon, arr, i);
-        arr[*(i)]=*(p->Data);
-        (*i)++;
-        reverseInorder(p->LeftSon,arr,i);
-    }
-    void removeTreeNodeBykey(K& key){
-        treeNode<K,D>* toRemove= returnNodeByKey(key);
-        removeTreeNode(toRemove);
     }
 
-    treeNode<K,D>* minValue()
-    {
-        treeNode<K,D>* current = this->getRoot();
-
-/* loop down to find the leftmost leaf */
-        while (current->LeftSon != NULL)
-        {
-            current = current->LeftSon;
-        }
-        return current;
+    void getCOMP(int* i){
+    if(i!=nullptr)
+        *i++;
     }
+    void remove(K& key){
+        bool f= false;
+        if(!f)
+        return;
+    }
+
+
 };
 
 #endif

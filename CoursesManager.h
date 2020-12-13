@@ -10,6 +10,7 @@
 #include "classLecture.h"
 #include "AVLtree.h"
 #include <exception>
+#include <new>
 #define ZERO 0
 #define DONTCARE -1
 
@@ -36,6 +37,32 @@ CoursesManager::CoursesManager()
 {
      this->courses_tree = new AVLTree<int, classLecture<linkedNode<AVLTree<int, AVLTree<int, int>>>>>();
      this->sorted_list = new LinkedList<AVLTree<int, AVLTree<int, int>>>();
+}
+
+
+
+treeNode<int,int>* sortedArrayToBST_aux(int start, int end)
+{
+    /* Base Case */
+    if (start > end)
+        return nullptr;
+
+    /* Get the middle element and make it root */
+    int mid = (start + end)/2;
+    int dont_care=-1;
+    treeNode<int,int>* root = new treeNode<int,int>(mid,dont_care);
+
+    /* Recursively construct the left subtree
+    and make it left child of root */
+    root->Left = sortedArrayToBST_aux( start,mid - 1);
+    if( root->Left!= nullptr)
+    root->Left->Up=root;
+    /* Recursively construct the right subtree
+    and make it right child of root */
+    root->Right = sortedArrayToBST_aux(mid + 1, end);
+    if(root->Right!= nullptr)
+    root->Right->Up=root;
+    return root;
 }
 
 
@@ -69,16 +96,18 @@ StatusType CoursesManager::AddCourseManger(void *DS, int courseID, int numOfClas
             }
 
             treeNode<int, AVLTree<int, int>> *current = new treeNode<int, AVLTree<int, int>>(courseID, nullptr);
-            sorted_list->ifTimeAlReadyExists(ZERO)->data->addTreeNodeByPtr(current);
+            sorted_list->ifTimeAlReadyExists(ZERO)->data->addthisTreeNodep(current);
             current->Data = new AVLTree<int, int>();
 
-            for(int i=0;i<numOfClasses ;i++)
-            {
-                int dont_care = DONTCARE;
-                treeNode<int,int> *c_i = new treeNode<int,int>(i,dont_care);
-                current->Data->addTreeNodeByPtr(c_i);
-            }
-            this->courses_tree->addTreeNodeByPtr(new_course);
+//            for(int i=0;i<numOfClasses ;i++)
+//            {
+//                int dont_care = DONTCARE;
+//                treeNode<int,int> *c_i = new treeNode<int,int>(i,dont_care);
+//                current->Data->addthisTreeNodep(c_i);
+//            }
+            current->Data->nodesAmount=numOfClasses;
+            current->Data->Head=sortedArrayToBST_aux(0,numOfClasses-1);
+            this->courses_tree->addthisTreeNodep(new_course);
             sorted_list->ifTimeAlReadyExists(ZERO)->data->min_number = sorted_list->ifTimeAlReadyExists(ZERO)->data->minValue();
             current->Data->min_number = current->Data->minValue();
             return SUCCESS;
@@ -99,22 +128,24 @@ StatusType CoursesManager::AddCourseManger(void *DS, int courseID, int numOfClas
             }
             treeNode<int, AVLTree<int, int>> *current = new treeNode<int, AVLTree<int, int>>(courseID, nullptr);
             sorted_list->ifTimeAlReadyExists(ZERO)->data = new AVLTree<int, AVLTree<int, int>>();
-            sorted_list->ifTimeAlReadyExists(ZERO)->data->addTreeNodeByPtr(current);
+            sorted_list->ifTimeAlReadyExists(ZERO)->data->addthisTreeNodep(current);
             current->Data = new AVLTree<int, int>();
             //add class to linked list tree
-            for(int i=0;i<numOfClasses ;i++)
-            {
-                int dont_care = DONTCARE;
-                treeNode<int,int> *c_i = new treeNode<int,int>(i,dont_care);
-                current->Data->addTreeNodeByPtr(c_i);
-            }
-            this->courses_tree->addTreeNodeByPtr(new_course);
+//            for(int i=0;i<numOfClasses ;i++)
+//            {
+//                int dont_care = DONTCARE;
+//                treeNode<int,int> *c_i = new treeNode<int,int>(i,dont_care);
+//                current->Data->addthisTreeNodep(c_i);
+//            }
+            current->Data->nodesAmount=numOfClasses;
+            current->Data->Head=sortedArrayToBST_aux(0,numOfClasses-1);
+            this->courses_tree->addthisTreeNodep(new_course);
             sorted_list->ifTimeAlReadyExists(ZERO)->data->min_number = sorted_list->ifTimeAlReadyExists(ZERO)->data->minValue();
             current->Data->min_number = current->Data->minValue();
             return SUCCESS;
         }
     }
-    catch (exception& e)
+    catch (std::bad_alloc& e)
     {
         return ALLOCATION_ERROR;
     }
@@ -123,14 +154,21 @@ StatusType CoursesManager::AddCourseManger(void *DS, int courseID, int numOfClas
 StatusType CoursesManager::TimeViewedManger(void *DS, int courseID, int classID, int *timeViewed)
 {
     try {
-        int numOfClasses = sizeof(((CoursesManager *)DS)->courses_tree->getByKey(courseID)->Data)/sizeof(((CoursesManager *)DS)->courses_tree->getByKey(courseID)->Data[0]);
-        if(DS==NULL || courseID<=0 ||classID<0 || numOfClasses>classID)
+        if(DS==NULL || courseID<=0 ||classID<0)
         {
             return INVALID_INPUT;
         }
+        if( !((CoursesManager *)DS)->courses_tree->searchKey(courseID))
+        {
+            return FAILURE;
+        }
+       // int numOfClasses = sizeof(((CoursesManager *)DS)->courses_tree->getByKey(courseID)->Data)/sizeof(((CoursesManager *)DS)->courses_tree->getByKey(courseID)->Data[0]);
+        int numOfClasses= ((CoursesManager *)DS)->courses_tree->getByKey(courseID)->Data->constant_number_of_class;
+        if(numOfClasses<=classID)
+            return INVALID_INPUT;
         *timeViewed = ((CoursesManager *)DS)->courses_tree->getByKey(courseID)->Data[classID].class_time_node->node_time;
         return SUCCESS;
-    } catch (exception& e)
+    } catch (std::bad_alloc& e)
     {
         return ALLOCATION_ERROR;
     }
@@ -168,7 +206,7 @@ StatusType CoursesManager::RemoveCourseManger(void *DS, int courseID)
         courses_tree->removeTreeNode(courses_tree->getByKey(courseID));
             //
         return SUCCESS;
-    }catch (exception& e)
+    }catch (std::bad_alloc& e)
     {
         return ALLOCATION_ERROR;
     }
@@ -206,12 +244,22 @@ StatusType CoursesManager::WatchClassManger(void *DS, int courseID, int classID,
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if( this->sorted_list->ifTimeAlReadyExists(new_time_toAdd) != nullptr)
         {
-            treeNode<int, AVLTree<int, int>> *current = new treeNode<int, AVLTree<int, int>>(courseID, nullptr);
-            sorted_list->ifTimeAlReadyExists(new_time_toAdd)->data->addTreeNodeByPtr(current);
-            current->Data = new AVLTree<int, int>();
+            //af7s ada akrs mwjod blnode ljded***** sle7!
+            treeNode<int, AVLTree<int, int>> *current;
+            AVLTree<int, AVLTree<int, int>> *tempA = sorted_list->ifTimeAlReadyExists(new_time_toAdd)->data;
+            // //af7s ada akrs mwjod blnode ljded***** sle7!
+            if(tempA->getByKey(courseID)== nullptr)
+            {
+                current = new treeNode<int, AVLTree<int, int>>(courseID, nullptr);
+                tempA->addthisTreeNodep(current);
+                current->Data = new AVLTree<int, int>();
+            } else{
+                current = tempA->getByKey(courseID);
+            }
+            //end check
                 int dont_care = DONTCARE;
                 treeNode<int,int> *c_i = new treeNode<int,int>(classID,dont_care);
-                current->Data->addTreeNodeByPtr(c_i);
+                current->Data->addthisTreeNodep(c_i);
             to_addTime_course->Data[classID].class_time_node =  this->sorted_list->ifTimeAlReadyExists(new_time_toAdd);
             sorted_list->ifTimeAlReadyExists(new_time_toAdd)->data->min_number = sorted_list->ifTimeAlReadyExists(new_time_toAdd)->data->minValue();
             current->Data->min_number = current->Data->minValue();
@@ -224,12 +272,12 @@ StatusType CoursesManager::WatchClassManger(void *DS, int courseID, int classID,
             treeNode<int, AVLTree<int, int>> *current = new treeNode<int, AVLTree<int, int>>(courseID, nullptr);
             // no need to create new data because addnew node make new data
             //sorted_list->ifTimeAlReadyExists(new_time_toAdd)->data = new AVLTree<int, AVLTree<int, int>>();
-            sorted_list->ifTimeAlReadyExists(new_time_toAdd)->data->addTreeNodeByPtr(current);
+            sorted_list->ifTimeAlReadyExists(new_time_toAdd)->data->addthisTreeNodep(current);
             current->Data = new AVLTree<int, int>();
             //add class to linked list tree
                 int dont_care = DONTCARE;
                 treeNode<int,int> *c_i = new treeNode<int,int>(classID,dont_care);
-                current->Data->addTreeNodeByPtr(c_i);
+                current->Data->addthisTreeNodep(c_i);
             to_addTime_course->Data[classID].class_time_node =  this->sorted_list->ifTimeAlReadyExists(new_time_toAdd);
             sorted_list->ifTimeAlReadyExists(new_time_toAdd)->data->min_number = sorted_list->ifTimeAlReadyExists(new_time_toAdd)->data->minValue();
             current->Data->min_number = current->Data->minValue();
@@ -238,31 +286,60 @@ StatusType CoursesManager::WatchClassManger(void *DS, int courseID, int classID,
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //end of for ->>> array of classses
     }
-    catch (exception& e)
+    catch (std::bad_alloc& e)
     {
         return ALLOCATION_ERROR;
     }
 }
 
+
+void getAllCourseClasses_aux(int numOfClasses, int *courses, int *classes , int& cnt ,treeNode<int,int> *right_tree , int course_num)
+{
+    if(right_tree== nullptr)
+        return;
+
+    getAllCourseClasses_aux(numOfClasses,courses,classes,cnt, right_tree->Left , course_num);
+    if(numOfClasses<=cnt)
+        return;
+    courses[cnt] = course_num;
+    classes[cnt] = *right_tree->Key;
+    cnt++;
+    getAllCourseClasses_aux(numOfClasses,courses,classes,cnt, right_tree->Right,course_num);
+}
+
+
 void getAllCourseClasses(int numOfClasses, int *courses, int *classes , int& cnt ,treeNode<int,AVLTree<int,int>> *current_course)
 {
-    treeNode<int,int> *current_class = current_course->getData()->minValue();
+    //treeNode<int,int> *current_class = current_course->getData()->minValue();
+    treeNode<int,int> *current_class = current_course->getData()->min_number;
     while(cnt<numOfClasses && current_class!= nullptr)
     {
         courses[cnt] = *current_course->Key;
         classes[cnt] = *current_class->Key;
         cnt++;
         treeNode<int,int> *current_class_parent = current_class;
-        //go rightsonssss
-        while (cnt<numOfClasses && current_class->RightSon!= nullptr)
-        {
-            current_class=current_class->RightSon;
-            courses[cnt] = *current_course->Key;
-            classes[cnt] = *current_class->Key;
-            cnt++;
-        }
-        current_class = current_class_parent->Father;
+        //go Rightssss
+        current_class=current_class->Right;
+        getAllCourseClasses_aux(numOfClasses,courses,classes,cnt,current_class,*current_course->Key);
+        //
+        //go up and repeat
+        current_class = current_class_parent->Up;
     }
+}
+
+
+void auxCoursesInOrder(int numOfClasses, int *courses, int *classes , int& cnt ,treeNode<int,AVLTree<int,int>> *right_tree)
+{
+    if(right_tree== nullptr)
+        return;
+
+    auxCoursesInOrder(numOfClasses,courses,classes,cnt, right_tree->Left);
+    if(numOfClasses<=cnt)
+        return;
+    //do
+    getAllCourseClasses(numOfClasses,courses,classes , cnt , right_tree);
+    //
+    auxCoursesInOrder(numOfClasses,courses,classes,cnt, right_tree->Right);
 }
 
 
@@ -285,7 +362,8 @@ StatusType CoursesManager::GetMostViewedClassesManger(void *DS, int numOfClasses
         //list
         while(cnt<numOfClasses)
         {
-            treeNode<int,AVLTree<int,int>> *current_course = current_list->data->minValue();
+            //treeNode<int,AVLTree<int,int>> *current_course = current_list->data->minValue();
+            treeNode<int,AVLTree<int,int>> *current_course = current_list->data->min_number;
             current_list = current_list->previous;
             //course
             while(cnt<numOfClasses && current_course!= nullptr)
@@ -295,13 +373,16 @@ StatusType CoursesManager::GetMostViewedClassesManger(void *DS, int numOfClasses
                // class
                getAllCourseClasses(numOfClasses,courses,classes , cnt , current_course);
                treeNode<int,AVLTree<int,int>> *current_course_parent = current_course;
-               //go rightsonsss
-               while(cnt<numOfClasses && current_course->RightSon!= nullptr)
-               {
-                   current_course = current_course->RightSon;
-                   getAllCourseClasses(numOfClasses,courses,classes , cnt , current_course);
-               }
-               current_course=current_course_parent->Father;
+               //go Rightsss
+                current_course=current_course->Right;
+                auxCoursesInOrder(numOfClasses,courses,classes,cnt,current_course);
+               //
+//               while(cnt<numOfClasses && current_course->Right!= nullptr)
+//               {
+//                   current_course = current_course->Right;
+//                   getAllCourseClasses(numOfClasses,courses,classes , cnt , current_course);
+//               }
+               current_course=current_course_parent->Up;
             }
             if(current_list== nullptr && cnt<numOfClasses)
             {
@@ -311,7 +392,7 @@ StatusType CoursesManager::GetMostViewedClassesManger(void *DS, int numOfClasses
 
         //enddd
         return SUCCESS;
-    } catch (exception& e)
+    } catch (std::bad_alloc& e)
     {
         return ALLOCATION_ERROR;
     }

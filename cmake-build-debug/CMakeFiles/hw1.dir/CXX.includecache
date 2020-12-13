@@ -6,67 +6,36 @@
 
 #IncludeRegexTransform: 
 
-<<<<<<< HEAD
-D:/gethub/MevniWet1/AVL.h
-iostream
--
-AVL_Tree.h
-D:/gethub/MevniWet1/AVL_Tree.h
-
-D:/gethub/MevniWet1/AVL_Tree.h
-iostream
--
-
-D:/gethub/MevniWet1/CoursesManager.h
-iostream
--
-AVL.h
-D:/gethub/MevniWet1/AVL.h
-library.h
-D:/gethub/MevniWet1/library.h
-linkedList.h
-D:/gethub/MevniWet1/linkedList.h
-=======
-F:/Documents/GitHub/WizardCell/MevniWet1/AVL.h
-iostream
--
-AVL_Tree.h
-F:/Documents/GitHub/WizardCell/MevniWet1/AVL_Tree.h
-
-F:/Documents/GitHub/WizardCell/MevniWet1/AVL_Tree.h
-iostream
--
-
-F:/Documents/GitHub/WizardCell/MevniWet1/CoursesManager.h
-iostream
--
-AVL.h
-F:/Documents/GitHub/WizardCell/MevniWet1/AVL.h
-library.h
-F:/Documents/GitHub/WizardCell/MevniWet1/library.h
-linkedList.h
-F:/Documents/GitHub/WizardCell/MevniWet1/linkedList.h
->>>>>>> fc3db906031268ea1b847bc8180dc54e4029f8bc
-stdlib.h
--
-time.h
--
+F:/Documents/GitHub/WizardCell/MevniWet1/AVLtree.h
 exception
 -
+iostream
+F:/Documents/GitHub/WizardCell/MevniWet1/iostream
 
-<<<<<<< HEAD
-D:/gethub/MevniWet1/library.h
+F:/Documents/GitHub/WizardCell/MevniWet1/CoursesManager.h
+iostream
+-
+linkedList.h
+F:/Documents/GitHub/WizardCell/MevniWet1/linkedList.h
+library.h
+F:/Documents/GitHub/WizardCell/MevniWet1/library.h
+classLecture.h
+F:/Documents/GitHub/WizardCell/MevniWet1/classLecture.h
+AVLtree.h
+F:/Documents/GitHub/WizardCell/MevniWet1/AVLtree.h
+exception
+-
+new
+-
 
-D:/gethub/MevniWet1/linkedList.h
-linkedListNode.h
-D:/gethub/MevniWet1/linkedListNode.h
+F:/Documents/GitHub/WizardCell/MevniWet1/classLecture.h
 
-D:/gethub/MevniWet1/linkedListNode.h
-
-D:/gethub/MevniWet1/main.cpp
+F:/Documents/GitHub/WizardCell/MevniWet1/library.cpp
+library.h
+F:/Documents/GitHub/WizardCell/MevniWet1/library.h
 CoursesManager.h
-D:/gethub/MevniWet1/CoursesManager.h
-=======
+F:/Documents/GitHub/WizardCell/MevniWet1/CoursesManager.h
+
 F:/Documents/GitHub/WizardCell/MevniWet1/library.h
 
 F:/Documents/GitHub/WizardCell/MevniWet1/linkedList.h
@@ -74,9 +43,18 @@ linkedListNode.h
 F:/Documents/GitHub/WizardCell/MevniWet1/linkedListNode.h
 
 F:/Documents/GitHub/WizardCell/MevniWet1/linkedListNode.h
+AVLtree.h
+F:/Documents/GitHub/WizardCell/MevniWet1/AVLtree.h
 
 F:/Documents/GitHub/WizardCell/MevniWet1/main.cpp
-CoursesManager.h
-F:/Documents/GitHub/WizardCell/MevniWet1/CoursesManager.h
->>>>>>> fc3db906031268ea1b847bc8180dc54e4029f8bc
+assert.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+library.h
+F:/Documents/GitHub/WizardCell/MevniWet1/library.h
 

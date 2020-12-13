@@ -80,17 +80,28 @@ static bool isInit = false;
 /***************************************************************************/
 /* main                                                                    */
 /***************************************************************************/
-
+FILE *f;
 int main(int argc, const char**argv) {
 
     char buffer[MAX_STRING_INPUT_SIZE];
-
+    FILE *filePointer;
+    f = fopen("my_result.txt", "w");
+    filePointer = fopen("stressin9.txt", "r");
+    if(filePointer == NULL)
+    {
+        printf("Unable to open file!");
+        exit(-5);
+    }
     // Reading commands
-    while (fgets(buffer, MAX_STRING_INPUT_SIZE, stdin) != NULL) {
+    int cnt=0;
+    while (fgets(buffer, MAX_STRING_INPUT_SIZE, filePointer) != NULL) {
+        cnt++;
         fflush(stdout);
         if (parser(buffer) == error)
             break;
     };
+    fclose(filePointer);
+    fclose(f);
     return 0;
 }
 
@@ -104,7 +115,8 @@ static commandType CheckCommand(const char* const command,
         return (NONE_CMD);
     if (StrCmp("#", command)) {
         if (strlen(command) > 1)
-            printf("%s", command);
+            //fprintf(f, "Some text: %s\n", text);
+            fprintf(f,"%s", command);
         return (COMMENT_CMD);
     };
     for (int index = 0; index < numActions; index++) {
@@ -178,7 +190,7 @@ static errorType parser(const char* const command) {
 
 static errorType OnInit(void** DS, const char* const command) {
     if (isInit) {
-        printf("init was already called.\n");
+        fprintf(f,"init was already called.\n");
         return (error_free);
     };
     isInit = true;
@@ -187,11 +199,11 @@ static errorType OnInit(void** DS, const char* const command) {
     *DS = Init();
 
     if (*DS == NULL) {
-        printf("init failed.\n");
+        fprintf(f,"init failed.\n");
         return error;
     };
 
-    printf("init done.\n");
+    fprintf(f,"init done.\n");
     return error_free;
 }
 
@@ -201,11 +213,11 @@ static errorType OnAddCourse(void* DS, const char* const command) {
     StatusType res = AddCourse(DS, courseID, numOfClasses);
 
     if (res != SUCCESS) {
-        printf("%s: %s\n", commandStr[ADDCOURSE_CMD], ReturnValToStr(res));
+        fprintf(f,"%s: %s\n", commandStr[ADDCOURSE_CMD], ReturnValToStr(res));
         return error_free;
     }
 
-    printf("%s: %s\n", commandStr[ADDCOURSE_CMD], ReturnValToStr(res));
+    fprintf(f,"%s: %s\n", commandStr[ADDCOURSE_CMD], ReturnValToStr(res));
     return error_free;
 }
 
@@ -215,11 +227,11 @@ static errorType OnRemoveCourse(void* DS, const char* const command) {
 	StatusType res = RemoveCourse(DS, courseID);
 
     if (res != SUCCESS) {
-        printf("%s: %s\n", commandStr[REMOVECOURSE_CMD], ReturnValToStr(res));
+        fprintf(f,"%s: %s\n", commandStr[REMOVECOURSE_CMD], ReturnValToStr(res));
         return error_free;
     }
 
-    printf("%s: %s\n", commandStr[REMOVECOURSE_CMD], ReturnValToStr(res));
+    fprintf(f,"%s: %s\n", commandStr[REMOVECOURSE_CMD], ReturnValToStr(res));
     return error_free;
 }
 
@@ -229,11 +241,11 @@ static errorType OnWatchClass(void* DS, const char* const command) {
     StatusType res = WatchClass(DS, courseID, classID, time);
 
     if (res != SUCCESS) {
-        printf("%s: %s\n", commandStr[WATCHCLASS_CMD], ReturnValToStr(res));
+        fprintf(f,"%s: %s\n", commandStr[WATCHCLASS_CMD], ReturnValToStr(res));
         return error_free;
     }
 
-    printf("%s: %s\n", commandStr[WATCHCLASS_CMD], ReturnValToStr(res));
+    fprintf(f,"%s: %s\n", commandStr[WATCHCLASS_CMD], ReturnValToStr(res));
     return error_free;
 }
 
@@ -243,18 +255,18 @@ static errorType OnTimeViewed(void* DS, const char* const command) {
     StatusType res = TimeViewed(DS, courseID, classID, &timeViewed);
 
     if (res != SUCCESS) {
-        printf("%s: %s\n", commandStr[TIMEVIEWED_CMD], ReturnValToStr(res));
+        fprintf(f,"%s: %s\n", commandStr[TIMEVIEWED_CMD], ReturnValToStr(res));
         return error_free;
     }
 
-    printf("%s: %d\n", commandStr[TIMEVIEWED_CMD], timeViewed);
+    fprintf(f,"%s: %d\n", commandStr[TIMEVIEWED_CMD], timeViewed);
     return error_free;
 }
 
 static errorType OnGetMostViewedClasses(void* DS, const char* const command) {
     int numOfClasses;
     int *courses = NULL, *classes = NULL;
-	StatusType res;
+	StatusType res = SUCCESS;
 
 	ValidateRead(sscanf(command, "%d", &numOfClasses), 1, "%s failed.\n", commandStr[GETMOSTVIEWEDCLASSES_CMD]);
 	if (numOfClasses > 0) {
@@ -270,22 +282,22 @@ static errorType OnGetMostViewedClasses(void* DS, const char* const command) {
 	}
 
     if (res != SUCCESS) {
-        printf("%s: %s\n", commandStr[GETMOSTVIEWEDCLASSES_CMD], ReturnValToStr(res));
+        fprintf(f,"%s: %s\n", commandStr[GETMOSTVIEWEDCLASSES_CMD], ReturnValToStr(res));
 		if (courses != NULL) free(courses);
 		if (classes != NULL) free(classes);
         return error_free;
     }
 
-    printf("%s: %s\n", commandStr[GETMOSTVIEWEDCLASSES_CMD], ReturnValToStr(res));
+    fprintf(f,"%s: %s\n", commandStr[GETMOSTVIEWEDCLASSES_CMD], ReturnValToStr(res));
 
-	printf("Course\t|\tClass\n");
+	fprintf(f,"Course\t|\tClass\n");
 
     for (int i = 0; i < numOfClasses; i++)
     {
-        printf("%d\t|\t%d\n", courses[i], classes[i]);
+        fprintf(f,"%d\t|\t%d\n", courses[i], classes[i]);
     }
 
-    printf("--End of most viewed classes--\n");
+    fprintf(f,"--End of most viewed classes--\n");
 
 	if (courses != NULL) free(courses);
 	if (classes != NULL) free(classes);
@@ -296,12 +308,12 @@ static errorType OnGetMostViewedClasses(void* DS, const char* const command) {
 static errorType OnQuit(void** DS, const char* const command) {
     Quit(DS);
     if (*DS != NULL) {
-        printf("quit failed.\n");
+        fprintf(f,"quit failed.\n");
         return error;
     };
 
     isInit = false;
-    printf("quit done.\n");
+    fprintf(f,"quit done.\n");
     return error_free;
 }
 

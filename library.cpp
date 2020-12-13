@@ -3,6 +3,7 @@
 //
 #include "library.h"
 #include "CoursesManager.h"
+
 void *Init()
 {
     CoursesManager *DS = new CoursesManager ();
