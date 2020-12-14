@@ -16,10 +16,13 @@
 
 class CoursesManager{
     public:
+
     AVLTree<int, classLecture<linkedNode<AVLTree<int, AVLTree<int, int>>>>> *courses_tree;
     LinkedList<AVLTree<int, AVLTree<int, int>>> *sorted_list;
+
     CoursesManager();
     ~CoursesManager();
+
     StatusType AddCourseManger(void *DS, int courseID, int numOfClasses);
     StatusType TimeViewedManger(void *DS, int courseID, int classID, int *timeViewed);
     StatusType RemoveCourseManger(void *DS, int courseID);
