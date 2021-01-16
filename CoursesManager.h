@@ -16,13 +16,10 @@
 
 class CoursesManager{
     public:
-
     AVLTree<int, classLecture<linkedNode<AVLTree<int, AVLTree<int, int>>>>> *courses_tree;
     LinkedList<AVLTree<int, AVLTree<int, int>>> *sorted_list;
-
     CoursesManager();
     ~CoursesManager();
-
     StatusType AddCourseManger(void *DS, int courseID, int numOfClasses);
     StatusType TimeViewedManger(void *DS, int courseID, int classID, int *timeViewed);
     StatusType RemoveCourseManger(void *DS, int courseID);
@@ -202,6 +199,7 @@ StatusType CoursesManager::RemoveCourseManger(void *DS, int courseID)
             sorted_list->ifTimeAlReadyExists(time_node_i->node_time)->data->min_number = sorted_list->ifTimeAlReadyExists(time_node_i->node_time)->data->minValue();
             if(time_node_i->data->getByKey(courseID)->Data->getRoot()== nullptr)
                 time_node_i->data->removeTreeNode( time_node_i->data->getByKey(courseID) );
+            time_node_i->data->min_number=time_node_i->data->minValue();
             if(time_node_i->data->getRoot() == nullptr)
                 sorted_list->removeNodeFromThis(time_node_i);
             ///////////
@@ -233,14 +231,17 @@ StatusType CoursesManager::WatchClassManger(void *DS, int courseID, int classID,
         treeNode<int, classLecture<linkedNode<AVLTree<int, AVLTree<int, int>>>>>* to_addTime_course = ((CoursesManager *)DS)->courses_tree->getByKey(courseID);
         linkedNode<AVLTree<int, AVLTree<int, int>>> *time_node = to_addTime_course->Data[classID].class_time_node;
         int new_time_toAdd = time +  time_node->node_time;
-        to_addTime_course->Data[classID].class_id=new_time_toAdd;
+        to_addTime_course->Data[classID].class_id=classID;
+        //to_addTime_course->Data[classID].class_id=new_time_toAdd;
         if(time_node->data->getRoot() == nullptr)
             sorted_list->removeNodeFromThis(time_node);
         //find cousre node in time_node_i tree && remove classid from course tree
         time_node->data->getByKey(courseID)->Data->removeTreeNode(   time_node->data->getByKey(courseID)->Data->getByKey(classID)  );
+        time_node->data->getByKey(courseID)->Data->min_number=time_node->data->getByKey(courseID)->Data->minValue();
         //
         if(time_node->data->getByKey(courseID)->Data->getRoot()== nullptr)
             time_node->data->removeTreeNode( time_node->data->getByKey(courseID) );
+        time_node->data->min_number=time_node->data->minValue();
         if(time_node->data->getRoot() == nullptr)
             sorted_list->removeNodeFromThis(time_node);
         ///make new node
@@ -365,6 +366,8 @@ StatusType CoursesManager::GetMostViewedClassesManger(void *DS, int numOfClasses
         //list
         while(cnt<numOfClasses)
         {
+            if(current_list== nullptr || current_list->data== nullptr || current_list->data->getRoot()== nullptr)
+                return FAILURE;
             //treeNode<int,AVLTree<int,int>> *current_course = current_list->data->minValue();
             treeNode<int,AVLTree<int,int>> *current_course = current_list->data->min_number;
             current_list = current_list->previous;

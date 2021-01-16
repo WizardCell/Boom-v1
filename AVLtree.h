@@ -212,6 +212,8 @@ public:
     }
 
     treeNode<K,D>* getRoot(){
+        if(this->Head== nullptr)
+            return nullptr ;
         return Head;
     }
 
@@ -306,6 +308,8 @@ public:
 
     treeNode<K,D>* minValue()
     {
+        if(this->Head==nullptr)
+            return nullptr;
         treeNode<K,D>* current = this->getRoot();
 
 /* loop down to find the leftmost leaf */
