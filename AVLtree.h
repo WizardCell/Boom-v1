@@ -25,9 +25,6 @@ public:
     class noNODES : public exception{};
     int Height;
     bool is_array;
-    class COMPCHECKE : public exception{};
-    class noNODESE : public exception{};
-    class noTREEE : public exception{};
     treeNode(): Up(nullptr), Left(nullptr), Right(nullptr), Key(nullptr), Data(nullptr), BF(0), Height(0)
     , is_array(false){}
 
@@ -192,12 +189,6 @@ public:
     treeNode<K,D>* Head;
     int nodesAmount;
     treeNode<K,D>* min_number;
-    class COMPCHECK : public exception{};
-    class noNODES : public exception{};
-    class noTREE : public exception{};
-    class COMPCHECKR : public exception{};
-    class noNODESR : public exception{};
-    class noTREER : public exception{};
     AVLTree(): Head(nullptr), nodesAmount(0), min_number(nullptr){}
 
     ~AVLTree(){
@@ -221,15 +212,6 @@ public:
     }
 //add node then fix tree
     void addthisTreeNodep(treeNode<K,D>* addNEW){
-        int ope=0;
-        int arop[TWO];
-        for(ope=0;ope<TWO;ope++)
-        {
-            ope++;
-            arop[0]=0;
-            ope--;
-        }
-        arop[0]++;
         addNEW->Right=nullptr;
         addNEW->Left=nullptr;
         addNEW->Up=nullptr;
@@ -347,15 +329,6 @@ public:
     }
 
     void removeTreeNode(treeNode<K,D>* toDelete){
-        int ope=0;
-        int arop[TWO];
-        for(ope=0;ope<TWO;ope++)
-        {
-            ope++;
-            arop[0]=0;
-            ope--;
-        }
-        arop[0]++;
         treeNode<K,D>* toDeleteUp=toDelete->Up;
         if(toDelete->Right== nullptr && toDelete->Left== nullptr){///no sons(leaf)
             if(toDeleteUp!=nullptr){
